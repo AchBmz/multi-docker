@@ -1,0 +1,17 @@
+sudo: required
+services:
+    - docker
+
+before_install:
+    - docker build -t achrefbmz/react-test -f ./client/Dockerfile.dev ./client
+
+scripts:
+    - docker run achrefbmz/react-test npm test -- --coverage
+
+after_success:
+    - docker build -t achrefbmz/multi-client ./client
+    - docker build -t achrefbmz/multi-nginx ./nginx
+    - docker build -t achrefbmz/multi-server ./server
+    - docker build -t achrefbmz/multi-worker ./worker
+
+    
